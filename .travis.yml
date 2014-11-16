@@ -1,0 +1,8 @@
+script: lein cljsbuild once
+
+deploy:
+  provider: s3
+  access_key_id: "AKIAJMNESGKCK544P3DQ"
+  secret_access_key: "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"
+  bucket: "steveindusteves.rockets"
+  skip_cleanup: true

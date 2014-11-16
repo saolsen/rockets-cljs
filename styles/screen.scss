@@ -3,3 +3,55 @@
 @import "reset";
 @import "bourbon/bourbon";
 @import "neat/neat";
+@import "mixins-variables";
+
+// Overall Typography
+body {
+    font: 1em 'Source Sans Pro', Arial, Helvetica, sans-serif;
+}
+
+// Primary Containers
+#app {
+    width: 50%;
+    height: 100%;
+    float: left;
+    background: black;
+}
+
+#game-controls {
+    width: 50%;
+    height: 100%;
+    float: left;
+    position: relative;
+}
+
+
+// Controls
+#control-bank {
+    position: absolute;
+    left: 15px;
+    bottom: 15px;
+    width: 100%;
+    height: 175px;
+    padding: 15px;
+    @include box-sizing(border-box);
+    @include calc(width, '100% - 30px');
+    background: rgba(0,0,0,0.04);
+    border-radius: 3px;
+    box-shadow: 0px 1px 0px rgba(0,0,0,0.1);
+}
+
+.game-control {
+    display: inline-block;
+    padding: 6px 10px 5px;
+    margin-right: 6px;
+    background: red;
+    font-size: .75em;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    cursor: pointer;
+}

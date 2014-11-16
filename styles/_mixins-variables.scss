@@ -1,0 +1,19 @@
+// Mixins
+
+// Float Container
+@mixin contains-floats {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+// Calc
+@mixin calc($property, $expression) {
+  #{$property}: -webkit-calc(#{$expression});
+  #{$property}: -moz-calc(#{$expression});
+  #{$property}: calc(#{$expression});
+}
+
+// Variables
+
+$light-gray: #f7f7f7;

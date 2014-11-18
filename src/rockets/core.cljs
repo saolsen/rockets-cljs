@@ -100,11 +100,3 @@
        )))
  gamestate
  {:target (. js/document (getElementById "app"))})
-
-;; (om/root
-;;  (fn [app owner]
-;;    (reify om/IRender
-;;      (render [_]
-;;        (om/build controls app))))
- gamestate
- { :target (. js/document (getElementById "game-controls"))})

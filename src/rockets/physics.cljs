@@ -9,6 +9,11 @@
 (def round js/Math.round)
 (def pi js/Math.PI)
 
+(defn round4
+  "Rounds n to 4 decimal places (I think that's enough)"
+  [n]
+  (/ (round (* n 1000)) 1000))
+
 (defn to-radians [rotation]
   (* (/ pi 180) rotation))
 

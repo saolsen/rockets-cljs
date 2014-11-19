@@ -4,11 +4,29 @@
             [clojure.string :as str]
 
             [rockets.physics :refer [apply-thrusters]]
-            [rockets.scene :refer [display-scene]]))
+            [rockets.scene :refer [scene-panal]]
+            [rockets.rules :refer [control-panal]]))
+
+;; use transit
+;; look into immutable-js if you want to use just js
+;; figure out component local state in the gamestate so I can make
+;; tweak bar just tweak and stop needing to see gamestate all the time.
 
 (enable-console-print!)
 
-(def gamestate (atom {:text "Rockets"
+(def gamestate (atom {:frame {:then (.now js/Date)
+                              :fps 0}
+                      ;; can I just put a js object here?
+                      :stats (let [s (js/Stats.)
+                                   style (.-style (.-domElement s))]
+                               ;;(.setMode s 1)
+                               (aset style "position" "absolute")
+                               (aset style "left" "0px")
+                               (aset style "top" "0px")
+                               (.appendChild (.-body js/document)
+                                             (.-domElement s))
+                               s)
+                      :text "Rockets"
                       :running true
                       :entities [{:id :player-ship
                                   :position [100 100]
@@ -23,80 +41,60 @@
                                  {:text "Rotation"}
                                  {:text "hi jeremy"}]
                       :rules {:nodes
-                              ;; {:a {:text "A" :pos {:x 10 :y 10}}
-                              ;;  :b {:text "B" :pos {:x 100 :y 100}}
-                              ;;  :c {:text "C" :pos {:x 300 :y 300}}}
-                              (into {} (for [x (range 100)]
-                                         [x
-                                          {:text (str (int (* 10 (rand))))
-                                           :pos {:x (* 1000 (rand))
-                                                 :y (* 1000 (rand))}}]))
-                              :edges (for [x (range 10)]
-                                       {:from (int (* 100 (rand)))
-                                        :to (int (* 100 (rand)))})
-                              ;; [{:from :a :to :b}
-                              ;;  {:from :b :to :c}
-                              ;;  {:from :a :to :c}]
+                              ;; (into {} (for [x (range 100)]
+                              ;;            [x
+                              ;;             {:text (str (int (* 10 (rand))))
+                              ;;              :pos {:x (* 1000 (rand))
+                              ;;                    :y (* 1000 (rand))}}]))
+                              {:a {:text "A" :pos {:x 10 :y 10}}
+                               :b {:text "B" :pos {:x 100 :y 200}}
+                               :c {:text "C" :pos {:x 300 :y 150}}}
+                              :edges
+                              ;; (for [x (range 10)]
+                              ;;   {:from (int (* 100 (rand)))
+                              ;;    :to (int (* 100 (rand)))})
+                              [{:from :a :to :b}
+                               {:from :b :to :c}
+                               {:from :a :to :c}]
                               }}))
 
-(defn node
+(defn tweak-bar
   [node owner]
   (reify om/IRender
     (render [_]
-      (dom/text #js {:width 10 :height 10
-                     :x (:x (:pos node)) :y (:y (:pos node))
-                     :fill "blue"} (:text node)))))
-
-(defn edges
-  [rules owner]
-  (reify om/IRender
-    (render [_]
-      (let [edges (:edges rules)
-            nodes (:nodes rules)
-            mapper (fn [edge]
-                     (let [from (get nodes (:from edge))
-                           to (get nodes (:to edge))]
-                       (assoc edge
-                         :fromx (:x (:pos from))
-                         :fromy (:y (:pos from))
-                         :tox (:x (:pos to))
-                         :toy (:y (:pos to)))))
-            with-coordinates (map mapper edges)]
-        (apply dom/g nil
-               (map #(dom/line #js {:x1 (:fromx %) :y1 (:fromy %)
-                                    :x2 (:tox %) :y2 (:toy %)
-                                    :stroke "red"})
-                    with-coordinates))))))
-
-(defn controls
-  [app owner]
-  (reify om/IRender
-    (render [_]
-      (apply dom/svg #js {:width "100%" :height "100%"}           
-             (om/build edges (:rules app))
-             (om/build-all node (vals (:nodes (:rules app))))))))
-;;;;;;;;
+      (dom/span nil
+                ;; Figure out a good little tweak bar, for now show framerate
+                "tweak bar"
+                ))))
 
 (defn update-game
   [state]
-  (if (:running state)
-    ;; Hardcoded first entity to player ship (not ideal)
-    (update-in state [:entities 0] apply-thrusters)
-    state))
+  (.begin (:stats state))
+  (let [result
+        (cond-> state
+                ;; true (update-in [:frame] calc-framerate)
+                
+                ;; Hardcoded first entity to player ship (not ideal)
+                (:running state) (update-in [:entities 0] apply-thrusters))]
+    (.end (:stats state))
+    result))
 
 (defn game-tick []
   (.requestAnimationFrame js/window game-tick)
   (swap! gamestate update-game))
 
-;; Entry Points
 (game-tick)
 
 (om/root
  (fn [app owner]
    (reify om/IRender
      (render [_]
-       ;;(om/build display-scene app)
-       (om/build controls app)
+       ;; We're gonna need some css up in here
+       (dom/div nil
+                ;;(om/build tweak-bar app)
+                (om/build control-panal app)
+                (om/build scene-panal app)
+                )
        )))
  gamestate
  {:target (. js/document (getElementById "app"))})

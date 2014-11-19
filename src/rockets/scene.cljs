@@ -2,8 +2,7 @@
   "Rendering of the game scene."
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
-
-;; Game Rendering Code
+ 
 (defn get-transform
   "Takes the rocket and gets the transform string to be passed to the svg"
   [ship]
@@ -70,12 +69,13 @@
              ;;                :fill "black"})
              ))))
 
-(defn display-scene
+(defn scene-panal
   [app owner]
   (reify om/IRender
     (render [_]
-      (dom/svg #js {:width "100%" :height "100%"
-                    :backgroundColor "black"}
+      (dom/svg #js {:width "800" :height "600"
+                    :backgroundColor "black"
+                    :id "scene"}
                ;; Background
                (dom/rect #js {:width "100%"
                               :height "100%"
@@ -83,4 +83,4 @@
                ;; Ship
                (om/build display-ship (first (:entities app)))
                ))))
-;; END
+

@@ -36,6 +36,6 @@
   [app owner]
   (reify om/IRender
     (render [_]
-      (apply dom/svg #js {:width "800" :height "600" :id "controls"}
+      (apply dom/svg #js {:width "359" :height "700" :id "controls"}
              (om/build edges (:rules app))
              (om/build-all node (vals (:nodes (:rules app))))))))

@@ -45,11 +45,6 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box; }
-
 #app {
   margin: 0 auto;
   max-width: 1600px;

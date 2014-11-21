@@ -73,7 +73,7 @@
   (let [result
         (cond-> state
                 ;; true (update-in [:frame] calc-framerate)
-                
+
                 ;; Hardcoded first entity to player ship (not ideal)
                 (:running state) (update-in [:entities 0] apply-thrusters))]
     (.end (:stats state))
@@ -92,8 +92,8 @@
        ;; We're gonna need some css up in here
        (dom/div nil
                 ;;(om/build tweak-bar app)
-                (om/build control-panal app)
                 (om/build scene-panal app)
+                (om/build control-panal app)
                 )
        )))
  gamestate

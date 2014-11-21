@@ -2,13 +2,21 @@
   "Rendering of the game scene."
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
+
+(defn round [n] (.round js/Math n))
+
+;; Does rounding help?
+(defn round4
+  "Rounds n to 4 decimal places (I think that's enough)"
+  [n]
+  (/ (round (* n 1000)) 1000))
  
 (defn get-transform
   "Takes the rocket and gets the transform string to be passed to the svg"
   [ship]
   (let [{:keys [position rotation]} ship
         [x y] position]
-    (str "translate(" x "," y ") rotate(" rotation ")")))
+    (str "translate(" (round4 x) "," (round4 y) ") rotate(" rotation ")")))
 
 (defn ship-body
   "Returns an svg element of the ship body"

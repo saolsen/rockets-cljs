@@ -41,21 +41,21 @@
                                  {:text "Rotation"}
                                  {:text "hi jeremy"}]
                       :rules {:nodes
-                              ;; (into {} (for [x (range 100)]
-                              ;;            [x
-                              ;;             {:text (str (int (* 10 (rand))))
-                              ;;              :pos {:x (* 1000 (rand))
-                              ;;                    :y (* 1000 (rand))}}]))
-                              {:a {:text "A" :pos {:x 10 :y 10}}
-                               :b {:text "B" :pos {:x 100 :y 200}}
-                               :c {:text "C" :pos {:x 300 :y 150}}}
+                              (into {} (for [x (range 100)]
+                                         [x
+                                          {:text (str (int (* 10 (rand))))
+                                           :pos {:x (* 1000 (rand))
+                                                 :y (* 1000 (rand))}}]))
+                              ;; {:a {:text "A" :pos {:x 10 :y 10}}
+                              ;;  :b {:text "B" :pos {:x 100 :y 200}}
+                              ;;  :c {:text "C" :pos {:x 300 :y 150}}}
                               :edges
-                              ;; (for [x (range 10)]
-                              ;;   {:from (int (* 100 (rand)))
-                              ;;    :to (int (* 100 (rand)))})
-                              [{:from :a :to :b}
-                               {:from :b :to :c}
-                               {:from :a :to :c}]
+                              (for [x (range 10)]
+                                {:from (int (* 100 (rand)))
+                                 :to (int (* 100 (rand)))})
+                              ;; [{:from :a :to :b}
+                              ;;  {:from :b :to :c}
+                              ;;  {:from :a :to :c}]
                               }}))
 
 (defn tweak-bar

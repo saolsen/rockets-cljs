@@ -1,5 +1,4 @@
-language: clojure
-
+lang: clojure
 script: lein cljsbuild once
 
 deploy:

@@ -3,9 +3,9 @@
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 
+;; Does rounding help?
 (defn round [n] (.round js/Math n))
 
-;; Does rounding help?
 (defn round4
   "Rounds n to 4 decimal places (I think that's enough)"
   [n]
@@ -15,8 +15,11 @@
   "Takes the rocket and gets the transform string to be passed to the svg"
   [ship]
   (let [{:keys [position rotation]} ship
-        [x y] position]
-    (str "translate(" (round4 x) "," (round4 y) ") rotate(" rotation ")")))
+        [x y] position
+        mirror-y ;;(- 700 y)
+        y
+        ]
+    (str "translate(" (round4 x) "," (round4 mirror-y) ") rotate(" rotation ")")))
 
 (defn ship-body
   "Returns an svg element of the ship body"
@@ -72,10 +75,16 @@
       (dom/g #js {:transform (get-transform ship)}
              (ship-body)
              (ship-thrusters (:thrusters ship))
-             ;; Center marker
-             ;; (dom/rect #js {:width 1 :height 1
-             ;;                :fill "black"})
              ))))
+
+(defn display-goal
+  [goal owner]
+  (reify om/IRender
+    (render [_]
+      (dom/rect #js {:width 20 :height 20
+                     :x -10 :y -10
+                     :transform (get-transform goal)
+                     :fill "yellow"}))))
 
 (defn scene-panal
   [app owner]
@@ -89,6 +98,8 @@
                               :height "100%"
                               :fill "black"})
                ;; Ship
-               (om/build display-ship (first (:entities app)))
-               ))))
+               (om/build display-ship (:ship (:scene app)))
 
+               ;; Goal
+               (om/build display-goal (:goal (:scene app)))
+               ))))

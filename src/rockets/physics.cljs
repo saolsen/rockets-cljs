@@ -1,18 +1,12 @@
 (ns rockets.physics)
 
-;;TODO hack
-(def screen-height 600)
-(def screen-width 800)
+(def screen-width 600)
+(def screen-height 700)
 
 (def cos js/Math.cos)
 (def sin js/Math.sin)
 (def round js/Math.round)
 (def pi js/Math.PI)
-
-(defn round4
-  "Rounds n to 4 decimal places (I think that's enough)"
-  [n]
-  (/ (round (* n 1000)) 1000))
 
 (defn to-radians [rotation]
   (* (/ pi 180) rotation))
@@ -25,7 +19,8 @@
              bs    (mapv + [(- r) -2 0])
              sp    (mapv + [(- r) 2 0])
              ss    (mapv + [r -2 0])
-             boost (mapv + [0 0 -5]))))
+             boost (mapv + [0 0 -5])
+             )))
 
 (defn gamespace-force
   [rotation [x y]]

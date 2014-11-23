@@ -90,7 +90,7 @@
   [app owner]
   (reify om/IRender
     (render [_]
-      (dom/svg #js {:width "626" :height "708"
+      (dom/svg #js {:width "600" :height "700"
                     :backgroundColor "black"
                     :id "scene"}
                ;; Background

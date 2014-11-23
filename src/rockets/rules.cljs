@@ -102,3 +102,4 @@
 ;;       (apply dom/svg #js {:width "338" :height "708" :id "controls"}
 ;;              (om/build edges (:rules app))
 ;;              (om/build-all node (vals (:nodes (:rules app))))))))
+

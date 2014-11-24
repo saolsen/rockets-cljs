@@ -79,6 +79,3 @@
     (render [_]
       (apply dom/svg #js {:width "338" :height "700" :id "controls"}
              (om/build-all display-node (:nodes (:rules app)))))))
-
-
-(.log js/console #js (assoc {} :foo 123))

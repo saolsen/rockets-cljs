@@ -15,11 +15,8 @@
   "Takes the rocket and gets the transform string to be passed to the svg"
   [ship]
   (let [{:keys [position rotation]} ship
-        [x y] position
-        mirror-y ;;(- 700 y)
-        y
-        ]
-    (str "translate(" (round4 x) "," (round4 mirror-y) ") rotate(" rotation ")")))
+        [x y] position]
+    (str "translate(" (round4 x) "," (round4 y) ") rotate(" rotation ")")))
 
 (defn ship-body
   "Returns an svg element of the ship body"
@@ -93,13 +90,15 @@
       (dom/svg #js {:width "600" :height "700"
                     :backgroundColor "black"
                     :id "scene"}
-               ;; Background
-               (dom/rect #js {:width "100%"
-                              :height "100%"
-                              :fill "black"})
-               ;; Ship
-               (om/build display-ship (:ship (:scene app)))
+               ;; Mirror y access because we want 0,0 to be on the bottom left
+               (dom/g #js {:transform "translate(600,700) rotate(180)"}
+                      ;; Background
+                      (dom/rect #js {:width "100%"
+                                     :height "100%"
+                                     :fill "black"})
+                      ;; Ship
+                      (om/build display-ship (:ship (:scene app)))
 
-               ;; Goal
-               (om/build display-goal (:goal (:scene app)))
+                      ;; Goal
+                      (om/build display-goal (:goal (:scene app))))
                ))))

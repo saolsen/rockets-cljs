@@ -5,7 +5,8 @@
 
             [rockets.physics :refer [apply-thrusters]]
             [rockets.scene :refer [scene-panal]]
-            [rockets.rules :refer [control-panal test-rules]]))
+            [rockets.rules :refer [control-panal test-rules
+                                   slightly-more-complicated-test-rules]]))
 
 ;; use transit
 ;; look into immutable-js if you want to use just js
@@ -35,9 +36,10 @@
                                s)
                       :running true
                       :scene level1
-                      :rules test-rules}))
+                      :rules slightly-more-complicated-test-rules}))
 
 (defn check-if-winner
+  "Really bad victory logic for testing."
   [state]
   (let [scene (:scene state)]
     (if (= (:position (:ship scene))

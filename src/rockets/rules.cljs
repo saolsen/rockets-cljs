@@ -3,7 +3,9 @@
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 
-;; Kind? [:root :signal :constant :predicate :gate :thruster]
+;; TODO(stephen): add a compile time check that all of these are account for in all
+;; my multimethods so when I add a new one I know everywhere to update it.
+(def kinds #{:root :signal :constant :predicate :gate :thruster})
 ;; possible future kinds, stack, var, label
 
 (def test-rules
@@ -15,6 +17,9 @@
             :thruster :booster
             :x 0 :y 34}]})
 
+;; todo(stephen): maybe store the rules as a map from id, so linking them up is easier?
+;; I guess linking up will be done by clicking and the html element will know it's id
+;; so maybe it won't be necessary but keep it in mind.
 (def slightly-more-complicated-test-rules
   {:nodes [{:kind :root
             :id :root
@@ -28,7 +33,8 @@
            {:kind :signal
             :id :lh
             :x 0 :y 24
-            :signal :pos-x}
+            :signal :pos-x
+            :input :root}
            {:kind :constant
             :id :rh
             :x 200 :y 24
@@ -40,6 +46,32 @@
             :input :pred
             }]})
 
+;; Eval
+;; (defn build-tree
+;;   "Builds the processing tree from the list of nodes.
+;;   We keep the nodes in a list because it's easier to
+;;   display them and work with them but we need a tree
+;;   from the root for processing."
+;;   [nodes]
+;;   (let [nodes-by-id (into {} (map #([(:id %) %]) nodes))
+;;         empty-children-map (into {} (map #([(:id %) []]) nodes))
+
+;;         children-map (reduce #(update-in %1 [(:id %2) ]) empty-children-map nodes)
+;;         root (:root nodes-by-id)
+;;         ]
+    
+
+;;     )
+;; )
+
+(defn eval-rules
+  [nodes]
+  (let [thrusters (filter :thruster nodes)]
+    (println thrusters)))
+
+
+
+;; Display
 (defmulti node-element :kind)
 
 (defmethod node-element :root

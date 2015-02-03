@@ -36,8 +36,10 @@
                                s)
                       :running true
                       :scene level1
-                      :rules slightly-more-complicated-test-rules}))
+                      :rules slightly-more-complicated-test-rules ;;test-rules
+                      }))
 
+;;todo(stephen): Better checking, use yet to be written collision detection.
 (defn check-if-winner
   "Really bad victory logic for testing."
   [state]
@@ -45,7 +47,8 @@
     (if (= (:position (:ship scene))
            (:position (:goal scene)))
       (do
-        (js/alert "YOU WIN GOOD JOB YOU!")
+        ;; Get rid of supper annoying alert
+        ;; (js/alert "YOU WIN GOOD JOB YOU!")
         (assoc state :running false))
       state)))
 
